@@ -11,7 +11,11 @@
 require 'csv'
 
 class RightCSV < CSV
-  def init_separators(options)
+  def initialize(data, **options)
+    super(data, options.merge(nil_value: ''))
+  end
+
+  def init_separators(*)
     super
     unless @force_quotes
       quote_orig = @quote
@@ -19,10 +23,6 @@ class RightCSV < CSV
         field.to_s.empty? ? '' : quote_orig.call(field)
       end
     end
-  end
-
-  def shift
-    super&.map{ |s| s.nil? ? '' : s }
   end
 end
 
